@@ -3,9 +3,12 @@ require('openmusic-oscilloscope').register('openmusic-oscilloscope');
 require('../').register('openmusic-theremin-ui');
 
 var ac = new AudioContext();
+var masterVolume = ac.createGain();
+masterVolume.gain.value = 0.05;
+masterVolume.connect(ac.destination);
+
 var limiter = ac.createDynamicsCompressor();
-// limiter.gain.value = 0.25;
-limiter.connect(ac.destination);
+limiter.connect(masterVolume);
 
 var analyser = ac.createAnalyser();
 var oscilloscope = document.createElement('openmusic-oscilloscope');
@@ -21,5 +24,5 @@ thereminNode.start();
 var thereminElement = document.createElement('openmusic-theremin-ui');
 thereminElement.attachTo(thereminNode);
 
-document.body.appendChild(componentElement);
+document.body.appendChild(thereminElement);
 document.body.appendChild(oscilloscope);

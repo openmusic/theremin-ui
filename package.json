@@ -29,6 +29,7 @@
     "openmusic-theremin": "^1.0.0"
   },
   "dependencies": {
+    "midiutils": "0.0.4",
     "openmusic-xycontroller": "^1.0.0"
   }
 }

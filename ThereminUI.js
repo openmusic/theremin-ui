@@ -1,17 +1,48 @@
 (function() {
 	require('openmusic-xycontroller').register('openmusic-xycontroller');
+
+	var MIDIUtils = require('midiutils');
 	
 	var proto = Object.create(HTMLElement.prototype);
 	
 	proto.createdCallback = function() {
 		
-		this.values = {};
+		this.values = {
+			octaves: 2,
+			baseNote: 45
+		};
+		
+		this.attachedTheremin = null;
 
 		// making web components MWC framework proof.
 		this.innerHTML = '';
 
 		var xycontroller = document.createElement('openmusic-xycontroller');
 		this.appendChild(xycontroller);
+
+		var that = this;
+		
+		xycontroller.addEventListener('input', function(ev) {
+
+			// Why bother if we're not attached to any instrument?
+			if(!that.attachedTheremin) {
+				return;
+			}
+
+			var detail = ev.detail;
+			var x = detail.x; // -1, 1
+			var baseNote = that.values.baseNote;
+			var octaves = that.values.octaves;
+			var baseFrequency = MIDIUtils.noteNumberToFrequency(baseNote);
+			var upperFrequency = MIDIUtils.noteNumberToFrequency(baseNote + octaves * 12);
+			var intervalFrequency = upperFrequency - baseFrequency;
+			var offset = (x + 1) * 0.5;
+			var finalFrequency = baseFrequency + intervalFrequency * offset;
+			//console.log(baseFrequency, upperFrequency, finalFrequency);
+
+			that.attachedTheremin.frequency.gain.value = finalFrequency;
+			
+		});
 		
 		// this.readAttributes();
 		
@@ -62,9 +93,10 @@
 
 	// Optional: for components that represent an audio node
 	proto.attachTo = function(audioNode) {
-		audioNode.addEventListener('someevent', function(e) {
+		this.attachedTheremin = audioNode;
+		/*audioNode.addEventListener('someevent', function(e) {
 			// ...
-		});
+		});*/
 	};
 
 
