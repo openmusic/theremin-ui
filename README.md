@@ -1,6 +1,6 @@
 # openmusic-theremin-ui
 
-> A template for OpenMusic Web Components
+> UI for Theremin
 
 [![Install with NPM](https://nodei.co/npm/openmusic-theremin-ui.png?downloads=true&stars=true)](https://nodei.co/npm/openmusic-theremin-ui/)
 
