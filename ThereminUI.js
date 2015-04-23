@@ -9,7 +9,7 @@
 		
 		this.values = {
 			octaves: 2,
-			baseNote: 45
+			baseNote: 33
 		};
 		
 		this.attachedTheremin = null;
@@ -19,6 +19,14 @@
 
 		var xycontroller = document.createElement('openmusic-xycontroller');
 		this.appendChild(xycontroller);
+	
+		var divCurrentValues = document.createElement('div');
+		this.appendChild(divCurrentValues);
+	
+		var spanFrequency = document.createElement('span');
+		var spanNote = document.createElement('span');
+		divCurrentValues.appendChild(spanFrequency);
+		divCurrentValues.appendChild(spanNote);
 
 		var that = this;
 		
@@ -39,8 +47,11 @@
 			var offset = (x + 1) * 0.5;
 			var finalFrequency = baseFrequency + intervalFrequency * offset;
 			//console.log(baseFrequency, upperFrequency, finalFrequency);
+			//
+			spanFrequency.innerHTML = finalFrequency.toFixed(2);
 
-			that.attachedTheremin.frequency.gain.value = finalFrequency;
+			
+			that.attachedTheremin.frequency.value = finalFrequency;
 			
 		});
 		
