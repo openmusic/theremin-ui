@@ -14,7 +14,7 @@
 		
 		this.attachedTheremin = null;
 
-		// making web components MWC framework proof.
+		// making web components MVC framework proof.
 		this.innerHTML = '';
 
 		var xycontroller = document.createElement('openmusic-xycontroller');
