@@ -67,7 +67,7 @@
 				return;
 			}
 			that.attachedTheremin.stop();
-		});	
+		});
 		
 		xycontroller.addEventListener('input', function(ev) {
 
@@ -78,6 +78,7 @@
 
 			var detail = ev.detail;
 			var x = detail.x; // -1, 1
+			// TODO: use y for volume too
 			var baseNote = that.values.baseNote;
 			var octaves = that.values.octaves;
 			var baseFrequency = that._lowerFrequency;

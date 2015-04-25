@@ -1,6 +1,6 @@
 {
   "name": "openmusic-theremin-ui",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "UI for Theremin",
   "main": "ThereminUI.js",
   "scripts": {
@@ -32,6 +32,6 @@
   "dependencies": {
     "midiutils": "0.0.4",
     "openmusic-slider": "^1.0.0",
-    "openmusic-xycontroller": "^1.1.0"
+    "openmusic-xycontroller": "^1.2.0"
   }
 }
