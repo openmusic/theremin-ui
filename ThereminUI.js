@@ -1,4 +1,5 @@
 (function() {
+	require('openmusic-slider').register('openmusic-slider');
 	require('openmusic-xycontroller').register('openmusic-xycontroller');
 
 	var MIDIUtils = require('midiutils');
@@ -7,10 +8,16 @@
 	
 	proto.createdCallback = function() {
 		
+		var that = this;
+
 		this.values = {
-			octaves: 2,
+			octaves: 4,
 			baseNote: 33
 		};
+
+		this._lowerFrequency = 0;
+		this._upperFrequency = 0;
+		this._updateRanges();
 		
 		this.attachedTheremin = null;
 
@@ -19,6 +26,20 @@
 
 		var xycontroller = document.createElement('openmusic-xycontroller');
 		this.appendChild(xycontroller);
+
+		this.appendChild(document.createElement('br'));
+		
+		var octavesInput = document.createElement('openmusic-slider');
+		octavesInput.setAttribute('step', 1); // TODO why can't they work as properties? mmm
+		octavesInput.setAttribute('min', 1);
+		octavesInput.setAttribute('max', 8);
+		octavesInput.value = this.values.octaves;
+
+		octavesInput.addEventListener('input', function(e) {
+			console.log(this.value);
+			that.setValue('octaves', this.value);
+		});
+		this.appendChild(octavesInput);
 	
 		var divCurrentValues = document.createElement('div');
 		this.appendChild(divCurrentValues);
@@ -30,8 +51,7 @@
 		divCurrentValues.appendChild(separator); // TODO this layout is terrible, should make something better
 		divCurrentValues.appendChild(spanNote);
 
-		var that = this;
-
+		
 		xycontroller.addEventListener('touchstart', function(ev) {
 			if(!that.attachedTheremin) {
 				return;
@@ -57,8 +77,8 @@
 			var x = detail.x; // -1, 1
 			var baseNote = that.values.baseNote;
 			var octaves = that.values.octaves;
-			var baseFrequency = MIDIUtils.noteNumberToFrequency(baseNote);
-			var upperFrequency = MIDIUtils.noteNumberToFrequency(baseNote + octaves * 12);
+			var baseFrequency = that._lowerFrequency; // MIDIUtils.noteNumberToFrequency(baseNote);
+			var upperFrequency = that._upperFrequency; // MIDIUtils.noteNumberToFrequency(baseNote + octaves * 12);
 			var intervalFrequency = upperFrequency - baseFrequency;
 			var offset = (x + 1) * 0.5;
 			var finalFrequency = baseFrequency + intervalFrequency * offset;
@@ -77,6 +97,15 @@
 		
 	};
 
+	proto._updateRanges = function() {
+		var baseNote = this.values.baseNote;
+		var octaves = this.values.octaves;
+
+		this._lowerFrequency = MIDIUtils.noteNumberToFrequency(baseNote);
+		this._upperFrequency = MIDIUtils.noteNumberToFrequency(baseNote + octaves * 12);
+
+	};
+
 	
 	proto.attachedCallback = function() {
 		// Setup input listeners, perhaps start requestAnimationFrame here
@@ -89,8 +118,9 @@
 
 	proto.readAttributes = function() {
 		var that = this;
+		// TODO
 		[].forEach(function(attr) {
-			that.setValue(attr, that.getAttribute(attr));		
+			that.setValue(attr, that.getAttribute(attr));
 		});
 	};
 
@@ -102,6 +132,7 @@
 		}
 
 		// TODO: Potential re-draw or DOM update in reaction to these values
+		this._updateRanges();
 	};
 
 
