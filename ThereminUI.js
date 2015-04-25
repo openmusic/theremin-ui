@@ -14,9 +14,11 @@
 			octaves: 4,
 			baseNote: 33
 		};
-
+		
+		this._lastPlayedFrequency = 0;
 		this._lowerFrequency = 0;
 		this._upperFrequency = 0;
+
 		this._updateRanges();
 		
 		this.attachedTheremin = null;
@@ -56,6 +58,7 @@
 			if(!that.attachedTheremin) {
 				return;
 			}
+			that._setFrequency(that._lastPlayedFrequency);
 			that.attachedTheremin.start();
 		});
 	
@@ -77,19 +80,21 @@
 			var x = detail.x; // -1, 1
 			var baseNote = that.values.baseNote;
 			var octaves = that.values.octaves;
-			var baseFrequency = that._lowerFrequency; // MIDIUtils.noteNumberToFrequency(baseNote);
-			var upperFrequency = that._upperFrequency; // MIDIUtils.noteNumberToFrequency(baseNote + octaves * 12);
+			var baseFrequency = that._lowerFrequency;
+			var upperFrequency = that._upperFrequency;
 			var intervalFrequency = upperFrequency - baseFrequency;
 			var offset = (x + 1) * 0.5;
 			var finalFrequency = baseFrequency + intervalFrequency * offset;
 			var finalNote = MIDIUtils.noteNumberToName(MIDIUtils.frequencyToNoteNumber(finalFrequency));
+			
+			that._lastPlayedFrequency = finalFrequency;
+
 			//console.log(baseFrequency, upperFrequency, finalFrequency);
 			//
 			spanFrequency.innerHTML = finalFrequency.toFixed(2);
 			spanNote.innerHTML = finalNote;
 
-			
-			that.attachedTheremin.frequency.value = finalFrequency;
+			that._setFrequency(finalFrequency);
 			
 		});
 		
@@ -104,6 +109,13 @@
 		this._lowerFrequency = MIDIUtils.noteNumberToFrequency(baseNote);
 		this._upperFrequency = MIDIUtils.noteNumberToFrequency(baseNote + octaves * 12);
 
+	};
+
+	proto._setFrequency = function(v) {
+		if(!this.attachedTheremin) {
+			return;
+		}
+		this.attachedTheremin.frequency.value = v;
 	};
 
 	
