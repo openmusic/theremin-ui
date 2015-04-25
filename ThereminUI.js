@@ -11,8 +11,8 @@
 		var that = this;
 
 		this.values = {
-			octaves: 4,
-			baseNote: 33
+			octaves: 5,
+			baseNote: 24 // TODO make this configurable
 		};
 		
 		this._lastPlayedFrequency = 0;
@@ -84,16 +84,16 @@
 			var baseFrequency = that._lowerFrequency;
 			var upperFrequency = that._upperFrequency;
 			var intervalFrequency = upperFrequency - baseFrequency;
-			var offset = (x + 1) * 0.5;
-			var finalFrequency = baseFrequency + intervalFrequency * offset;
-			var finalNote = MIDIUtils.noteNumberToName(MIDIUtils.frequencyToNoteNumber(finalFrequency));
+			var finalFrequency = mapValues(x, -1, 1, baseFrequency, upperFrequency);
+			var finalNoteNumber = MIDIUtils.frequencyToNoteNumber(finalFrequency);
+			var finalNote = MIDIUtils.noteNumberToName(finalNoteNumber);
 			
 			that._lastPlayedFrequency = finalFrequency;
 
 			//console.log(baseFrequency, upperFrequency, finalFrequency);
 			//
-			spanFrequency.innerHTML = finalFrequency.toFixed(2);
-			spanNote.innerHTML = finalNote;
+			spanFrequency.innerHTML = finalFrequency.toFixed(2) + ' (' + baseFrequency.toFixed(2) + '-' + upperFrequency.toFixed(2) + ' Hz)';
+			spanNote.innerHTML = finalNote + ' (' + finalNoteNumber + ')';
 
 			that._setFrequency(finalFrequency);
 			
@@ -102,6 +102,16 @@
 		// this.readAttributes();
 		
 	};
+
+	// TODO make this a module
+	function mapValues(value, in_min, in_max, out_min, out_max) {
+
+		if(in_min == in_max) {
+			return out_min;
+		}
+
+		return out_min + (out_max - out_min) * (value - in_min) / (in_max - in_min);
+	}
 
 	proto._updateRanges = function() {
 		var baseNote = this.values.baseNote;
