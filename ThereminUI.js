@@ -24,8 +24,10 @@
 		this.appendChild(divCurrentValues);
 	
 		var spanFrequency = document.createElement('span');
+		var separator = document.createElement('br');
 		var spanNote = document.createElement('span');
 		divCurrentValues.appendChild(spanFrequency);
+		divCurrentValues.appendChild(separator); // TODO this layout is terrible, should make something better
 		divCurrentValues.appendChild(spanNote);
 
 		var that = this;
@@ -60,9 +62,11 @@
 			var intervalFrequency = upperFrequency - baseFrequency;
 			var offset = (x + 1) * 0.5;
 			var finalFrequency = baseFrequency + intervalFrequency * offset;
+			var finalNote = MIDIUtils.noteNumberToName(MIDIUtils.frequencyToNoteNumber(finalFrequency));
 			//console.log(baseFrequency, upperFrequency, finalFrequency);
 			//
 			spanFrequency.innerHTML = finalFrequency.toFixed(2);
+			spanNote.innerHTML = finalNote;
 
 			
 			that.attachedTheremin.frequency.value = finalFrequency;
