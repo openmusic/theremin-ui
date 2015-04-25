@@ -29,6 +29,20 @@
 		divCurrentValues.appendChild(spanNote);
 
 		var that = this;
+
+		xycontroller.addEventListener('touchstart', function(ev) {
+			if(!that.attachedTheremin) {
+				return;
+			}
+			that.attachedTheremin.start();
+		});
+	
+		xycontroller.addEventListener('touchend', function(ev) {
+			if(!that.attachedTheremin) {
+				return;
+			}
+			that.attachedTheremin.stop();
+		});	
 		
 		xycontroller.addEventListener('input', function(ev) {
 
