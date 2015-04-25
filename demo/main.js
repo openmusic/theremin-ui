@@ -19,7 +19,6 @@ analyser.connect(limiter);
 var Theremin = require('openmusic-theremin');
 var thereminNode = Theremin(ac);
 thereminNode.connect(analyser);
-thereminNode.start();
 
 var thereminElement = document.createElement('openmusic-theremin-ui');
 thereminElement.attachTo(thereminNode);
