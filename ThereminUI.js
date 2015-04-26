@@ -77,16 +77,17 @@
 			}
 
 			var detail = ev.detail;
-			var x = detail.x; // -1, 1
-			// TODO: use y for volume too
+			var x = detail.x;
+			var y = detail.y;
 			var baseNote = that.values.baseNote;
 			var octaves = that.values.octaves;
 			var baseFrequency = that._lowerFrequency;
 			var upperFrequency = that._upperFrequency;
 			var intervalFrequency = upperFrequency - baseFrequency;
-			var finalFrequency = mapValues(x, -1, 1, baseFrequency, upperFrequency);
+			var finalFrequency = mapValues(y, -1, 1, baseFrequency, upperFrequency);
 			var finalNoteNumber = MIDIUtils.frequencyToNoteNumber(finalFrequency);
 			var finalNote = MIDIUtils.noteNumberToName(finalNoteNumber);
+			var finalVolume = mapValues(x, -1, 1, 0, 1);
 			
 			that._lastPlayedFrequency = finalFrequency;
 
@@ -96,6 +97,7 @@
 			spanNote.innerHTML = finalNote + ' (' + finalNoteNumber + ')';
 
 			that._setFrequency(finalFrequency);
+			that._setVolume(finalVolume);
 			
 		});
 		
@@ -129,7 +131,13 @@
 		this.attachedTheremin.frequency.value = v;
 	};
 
-	
+	proto._setVolume = function(v) {
+		if(!this.attachedTheremin) {
+			return;
+		}
+		this.attachedTheremin.volume.value = v;
+	};
+
 	proto.attachedCallback = function() {
 		// Setup input listeners, perhaps start requestAnimationFrame here
 	};

@@ -1,6 +1,6 @@
 {
   "name": "openmusic-theremin-ui",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "UI for Theremin",
   "main": "ThereminUI.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "gulp": "^3.8.11",
     "openmusic-demo-gulp-tasks": "^1.4.0",
     "openmusic-oscilloscope": "^1.0.0",
-    "openmusic-theremin": "^2.1.0"
+    "openmusic-theremin": "^2.2.0"
   },
   "dependencies": {
     "midiutils": "0.0.4",
