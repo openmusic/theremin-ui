@@ -2,6 +2,7 @@
 	require('openmusic-slider').register('openmusic-slider');
 	require('openmusic-xycontroller').register('openmusic-xycontroller');
 
+	var safeRegisterElement = require('safe-register-element');
 	var MIDIUtils = require('midiutils');
 	
 	var proto = Object.create(HTMLElement.prototype);
@@ -197,9 +198,7 @@
 	var component = {};
 	component.prototype = proto;
 	component.register = function(name) {
-		document.registerElement(name, {
-			prototype: proto
-		});
+		safeRegisterElement(name, proto);
 	};
 
 	if(typeof define === 'function' && define.amd) {
