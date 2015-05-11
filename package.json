@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "midiutils": "0.0.4",
-    "openmusic-slider": "^1.0.0",
+    "openmusic-slider": "^2.1.0",
     "openmusic-xycontroller": "^1.2.0"
   }
 }

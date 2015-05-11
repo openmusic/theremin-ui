@@ -35,7 +35,7 @@
 		octavesInput.setAttribute('step', 1); // TODO why can't they work as properties? mmm
 		octavesInput.setAttribute('min', 1);
 		octavesInput.setAttribute('max', 8);
-		octavesInput.value = this.values.octaves;
+		octavesInput.setAttribute('value', this.values.octaves);
 
 		octavesInput.addEventListener('input', function(e) {
 			console.log(this.value);
